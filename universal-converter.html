@@ -38,6 +38,10 @@
         width: 32px;
         height: 32px;
     }
+    .modal-overlay {
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+    }
 </style>
 </head>
 <body class="min-h-screen gradient-bg">
@@ -157,6 +161,27 @@
             <path d="M12 14h.01"></path>
             <path d="M8 14h.01"></path>
             <path d="M8 18h.01"></path>
+        </svg>
+    );
+
+    const X = ({ size = 20, className = "" }) => (
+        <svg className={`icon ${className}`} width={size} height={size} viewBox="0 0 24 24">
+            <path d="m18 6-12 12"></path>
+            <path d="m6 6 12 12"></path>
+        </svg>
+    );
+
+    const Shield = ({ size = 20, className = "" }) => (
+        <svg className={`icon ${className}`} width={size} height={size} viewBox="0 0 24 24">
+            <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+        </svg>
+    );
+
+    const FileCheck = ({ size = 20, className = "" }) => (
+        <svg className={`icon ${className}`} width={size} height={size} viewBox="0 0 24 24">
+            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+            <path d="m9 15 2 2 4-4"></path>
         </svg>
     );
 
@@ -298,6 +323,348 @@
             showToast('Failed to copy to clipboard');
         });
     };
+
+    // Modal Component
+    const Modal = ({ isOpen, onClose, title, children }) => {
+        if (!isOpen) return null;
+
+        return (
+            <div className="fixed inset-0 modal-overlay flex items-center justify-center p-4 z-50">
+                <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+                    <div className="flex items-center justify-between p-6 border-b">
+                        <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+                        <button
+                            onClick={onClose}
+                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+                    <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                        {children}
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    // Privacy Policy Component
+    const PrivacyPolicy = () => (
+        <div className="prose max-w-none">
+            <div className="mb-6">
+                <p className="text-gray-600 mb-4">Last updated: {new Date().toLocaleDateString()}</p>
+            </div>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">1. Information We Collect</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        Universal Converter is designed with privacy in mind. We collect minimal information to provide our conversion services:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li><strong>Usage Data:</strong> We may collect anonymous usage statistics to improve our service</li>
+                        <li><strong>Local Storage:</strong> Conversion history and preferences are stored locally on your device</li>
+                        <li><strong>No Personal Data:</strong> We do not collect names, email addresses, or other personal information</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">2. How We Use Information</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>The limited information we collect is used to:</p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>Provide accurate conversion calculations</li>
+                        <li>Improve the user experience and functionality</li>
+                        <li>Maintain and optimize our service performance</li>
+                        <li>Generate anonymous usage analytics</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">3. Data Storage and Security</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        Your data security is important to us:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>All conversion calculations are performed locally in your browser</li>
+                        <li>No conversion data is transmitted to our servers</li>
+                        <li>Local storage data remains on your device and can be cleared at any time</li>
+                        <li>We use industry-standard security measures to protect our service</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">4. Third-Party Services</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        Universal Converter may use third-party services for:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>QR code generation (external API services)</li>
+                        <li>Currency exchange rate data (when available)</li>
+                        <li>Analytics and performance monitoring</li>
+                    </ul>
+                    <p>
+                        These services have their own privacy policies and we encourage you to review them.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">5. Cookies and Local Storage</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        We use local storage to enhance your experience:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>Saving your preferred conversion settings</li>
+                        <li>Storing conversion history for quick access</li>
+                        <li>Remembering your favorite currency pairs</li>
+                        <li>Maintaining theme preferences</li>
+                    </ul>
+                    <p>
+                        You can clear this data at any time through your browser settings.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">6. Your Rights</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>You have the right to:</p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>Clear all locally stored data at any time</li>
+                        <li>Use the service without providing personal information</li>
+                        <li>Request information about data collection practices</li>
+                        <li>Opt out of analytics tracking (where applicable)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">7. Children's Privacy</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        Universal Converter is safe for users of all ages. We do not knowingly collect personal information from children under 13. 
+                        The service operates entirely in the browser without requiring personal data input.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">8. Changes to Privacy Policy</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        We may update this privacy policy from time to time. Any changes will be reflected in the "Last updated" date at the top of this policy. 
+                        Continued use of the service after changes constitutes acceptance of the updated policy.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">9. Contact Information</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        If you have questions about this privacy policy or our data practices, please contact us through the feedback option in the application.
+                    </p>
+                </div>
+            </section>
+        </div>
+    );
+
+    // Terms of Service Component
+    const TermsOfService = () => (
+        <div className="prose max-w-none">
+            <div className="mb-6">
+                <p className="text-gray-600 mb-4">Last updated: {new Date().toLocaleDateString()}</p>
+            </div>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">1. Acceptance of Terms</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        By accessing and using Universal Converter, you accept and agree to be bound by the terms and provision of this agreement. 
+                        If you do not agree to abide by the above, please do not use this service.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">2. Description of Service</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        Universal Converter is a free web-based tool that provides various conversion services including:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>Currency conversion with approximate exchange rates</li>
+                        <li>Unit conversions (length, weight, temperature, etc.)</li>
+                        <li>Color format conversions (HEX, RGB, HSL)</li>
+                        <li>Text encoding and formatting tools</li>
+                        <li>QR code generation</li>
+                        <li>Other utility conversion tools</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">3. Use License</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        Permission is granted to temporarily use Universal Converter for personal and commercial purposes. This license shall automatically terminate if you violate any of these restrictions and may be terminated by us at any time.
+                    </p>
+                    <p><strong>You may not:</strong></p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>Modify or copy the service materials</li>
+                        <li>Use the materials for any commercial purpose or for any public display</li>
+                        <li>Attempt to reverse engineer any software contained in the service</li>
+                        <li>Remove any copyright or other proprietary notations from the materials</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">4. Disclaimer of Warranties</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        Universal Converter is provided "as is" without any representations or warranties, express or implied. We make no representations or warranties in relation to this service or the information and materials provided.
+                    </p>
+                    <p><strong>Important Notes:</strong></p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>Currency exchange rates are approximate and for reference only</li>
+                        <li>Conversion results should be verified for critical applications</li>
+                        <li>We do not guarantee the accuracy of all conversion calculations</li>
+                        <li>The service may be unavailable due to maintenance or technical issues</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">5. Limitations of Liability</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        In no event shall Universal Converter or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the service, even if we have been notified orally or in writing of the possibility of such damage.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">6. Accuracy of Materials</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        The materials appearing in Universal Converter could include technical, typographical, or photographic errors. We do not warrant that any of the materials are accurate, complete, or current. We may make changes to the materials at any time without notice.
+                    </p>
+                    <p>
+                        <strong>Financial Disclaimer:</strong> Currency conversion rates are provided for informational purposes only and should not be used for actual financial transactions without verification from authoritative sources.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">7. User Conduct</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>You agree to use Universal Converter only for lawful purposes and in a way that does not infringe the rights of, restrict, or inhibit anyone else's use and enjoyment of the service.</p>
+                    <p><strong>Prohibited uses include:</strong></p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>Attempting to gain unauthorized access to the service</li>
+                        <li>Using the service to transmit harmful or malicious content</li>
+                        <li>Interfering with the service's operation or security</li>
+                        <li>Using automated tools to access the service excessively</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">8. Privacy</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        Your privacy is important to us. Please review our Privacy Policy, which also governs your use of the service, to understand our practices.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">9. Modifications</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        We may revise these terms of service at any time without notice. By using this service, you are agreeing to be bound by the then current version of these terms of service.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">10. Governing Law</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        These terms and conditions are governed by and construed in accordance with applicable laws, and you irrevocably submit to the exclusive jurisdiction of the courts in that state or location.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-xl font-semibold mb-4">11. Contact Information</h3>
+                <div className="space-y-4 text-gray-700">
+                    <p>
+                        If you have any questions about these Terms of Service, please contact us through the feedback option in the application.
+                    </p>
+                </div>
+            </section>
+        </div>
+    );
+
+    // Footer Component
+    const Footer = ({ onPrivacyClick, onTermsClick }) => (
+        <footer className="bg-white border-t mt-16">
+            <div className="container mx-auto px-4 py-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 className="font-bold text-lg mb-4">Universal Converter</h3>
+                        <p className="text-gray-600 text-sm">
+                            Your all-in-one conversion toolkit. Convert currencies, units, colors, text, and more with ease.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 className="font-semibold mb-4">Features</h4>
+                        <ul className="space-y-2 text-sm text-gray-600">
+                            <li>Currency Converter</li>
+                            <li>Unit Converter</li>
+                            <li>Color Converter</li>
+                            <li>Text Tools</li>
+                            <li>QR Code Generator</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 className="font-semibold mb-4">Legal</h4>
+                        <ul className="space-y-2 text-sm">
+                            <li>
+                                <button 
+                                    onClick={onPrivacyClick}
+                                    className="text-blue-600 hover:text-blue-800 transition-colors"
+                                >
+                                    Privacy Policy
+                                </button>
+                            </li>
+                            <li>
+                                <button 
+                                    onClick={onTermsClick}
+                                    className="text-blue-600 hover:text-blue-800 transition-colors"
+                                >
+                                    Terms of Service
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="border-t mt-8 pt-8 text-center text-sm text-gray-600">
+                    <p>&copy; {new Date().getFullYear()} Universal Converter. All rights reserved.</p>
+                    <p className="mt-2">Made with ❤️ for easy conversions</p>
+                </div>
+            </div>
+        </footer>
+    );
 
     // Currency Converter Component with fixed calculation
     const CurrencyConverter = () => {
@@ -867,6 +1234,8 @@
     const App = () => {
         const [selectedConverter, setSelectedConverter] = useState(null);
         const [searchTerm, setSearchTerm] = useState("");
+        const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+        const [showTermsModal, setShowTermsModal] = useState(false);
 
         const converterCategories = [
             {
@@ -937,6 +1306,28 @@
                         </div>
                         <ConverterComponent />
                     </div>
+                    
+                    {/* Modals */}
+                    <Modal 
+                        isOpen={showPrivacyModal} 
+                        onClose={() => setShowPrivacyModal(false)} 
+                        title="Privacy Policy"
+                    >
+                        <PrivacyPolicy />
+                    </Modal>
+                    
+                    <Modal 
+                        isOpen={showTermsModal} 
+                        onClose={() => setShowTermsModal(false)} 
+                        title="Terms of Service"
+                    >
+                        <TermsOfService />
+                    </Modal>
+                    
+                    <Footer 
+                        onPrivacyClick={() => setShowPrivacyModal(true)}
+                        onTermsClick={() => setShowTermsModal(true)}
+                    />
                 </div>
             );
         }
@@ -1029,6 +1420,28 @@
                         </div>
                     </div>
                 </div>
+                
+                {/* Modals */}
+                <Modal 
+                    isOpen={showPrivacyModal} 
+                    onClose={() => setShowPrivacyModal(false)} 
+                    title="Privacy Policy"
+                >
+                    <PrivacyPolicy />
+                </Modal>
+                
+                <Modal 
+                    isOpen={showTermsModal} 
+                    onClose={() => setShowTermsModal(false)} 
+                    title="Terms of Service"
+                >
+                    <TermsOfService />
+                </Modal>
+                
+                <Footer 
+                    onPrivacyClick={() => setShowPrivacyModal(true)}
+                    onTermsClick={() => setShowTermsModal(true)}
+                />
             </div>
         );
     };
